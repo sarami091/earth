@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nature On — 자연의 스위치를 켜다</title>
+  <meta name="description" content="Nature On — 청소년이 주도하는 지역 생태복원 활동. 우리 손끝에서 자연을 다시 켜요." />
+  <meta name="author" content="충렬여고 1학년 1반" />
+
+  <!-- Basic styles & variables -->
+  <style>
+    :root{
+      --bg:#f7fbf8;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#2f9e4a; /* green */
+      --accent-2:#60c0a8; /* teal-ish */
+      --glass: rgba(255,255,255,0.7);
+      --radius:14px;
+      --max-width:1100px;
+      --easing: cubic-bezier(.2,.9,.3,1);
+      --shadow: 0 8px 30px rgba(14,30,37,0.06);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Helvetica Neue", Arial;
+      color: #0f1720;
+    }
+
+    /* Reset-ish */
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #f6fbf7 0%, #eef7ef 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.55;
+      letter-spacing: -0.01em;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    /* Layout */
+    .container{
+      width: calc(100% - 48px);
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    /* Header / Nav */
+    header{
+      position: sticky;
+      top: 16px;
+      z-index: 60;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 10px 0;
+      backdrop-filter: blur(6px);
+    }
+    .nav{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:48px;
+      height:48px;
+      display:inline-grid;
+      place-items:center;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+      border-radius:12px;
+      box-shadow: var(--shadow);
+      flex-shrink:0;
+    }
+
+    /* Inline SVG for leaf-switch */
+    .logo svg{width:28px;height:28px;filter: drop-shadow(0 6px 18px rgba(47,158,74,0.18));}
+
+    .site-title{
+      font-weight:700;
+      font-size:1rem;
+      line-height:1;
+    }
+    .site-sub{
+      font-size:0.78rem;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    nav a {
+      padding:8px 10px;
+      border-radius:8px;
+      color: #10301b;
+      font-weight:600;
+      font-size:0.95rem;
+    }
+    nav a:hover, nav a.active{
+      background: rgba(47,158,74,0.08);
+      color: var(--accent);
+      transition: all 220ms var(--easing);
+    }
+
+    /* Mobile nav toggle */
+    .menu-toggle{
+      display:none;
+      border: none;
+      background: none;
+      padding:8px;
+      border-radius:8px;
+    }
+
+    /* Hero section - full screen */
+    .hero{
+      min-height: calc(100vh - 40px);
+      display:grid;
+      align-items:center;
+      gap:32px;
+      padding: 36px 0 80px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:36px;
+      align-items:center;
+    }
+
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      border-radius: var(--radius);
+      padding:28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    .kicker{
+      display:inline-block;
+      font-weight:700;
+      color:var(--accent);
+      background:rgba(47,158,74,0.06);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:0.82rem;
+    }
+
+    h1{
+      margin: 12px 0 8px;
+      font-size: clamp(1.6rem, 2.6vw, 2.5rem);
+      line-height:1.05;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
+    }
+
+    .cta-row{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .btn{
+      background:var(--accent);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 8px 20px rgba(47,158,74,0.16);
+    }
+    .btn.ghost{
+      background:transparent;
+      color:var(--accent);
+      border: 1.5px solid rgba(47,158,74,0.12);
+      box-shadow:none;
+      font-weight:700;
+    }
+
+    /* hero right preview */
+    .hero-preview{
+      display:flex;
+      gap:12px;
+      flex-direction:column;
+    }
+    .stat{
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(247,250,249,0.8));
+      padding:14px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      box-shadow: var(--shadow);
+    }
+    .stat strong{font-size:1.15rem}
+
+    /* Sections */
+    section{
+      padding: 60px 0;
+      scroll-margin-top: 80px;
+    }
+
+    .section-title{
+      display:flex;
+      align-items:baseline;
+      gap:14px;
+      margin-bottom:18px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:1.25rem;
+    }
+    .section-sub{color:var(--muted);font-size:0.95rem}
+
+    /* Blog layout */
+    .two-col{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:start;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:18px;
+      box-shadow: var(--shadow);
+    }
+
+    .activity-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .activity{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .activity .dot{
+      width:12px;height:12px;border-radius:50%;
+      background:var(--accent);
+      margin-top:6px;
+      flex-shrink:0;
+    }
+
+    /* Campaign form */
+    form input, form textarea, form select{
+      width:100%;
+      padding:12px 14px;
+      margin-top:8px;
+      margin-bottom:12px;
+      border-radius:10px;
+      border:1px solid #e6eef0;
+      background: #fbfffc;
+      font-size:0.95rem;
+    }
+
+    .small{
+      font-size:0.9rem;color:var(--muted);
+    }
+
+    /* news list */
+    .news-list{display:flex;flex-direction:column;gap:14px}
+    .news-item{
+      display:flex;gap:14px;align-items:flex-start;
+    }
+    .news-thumb{
+      width:110px;height:72px;border-radius:8px;background:linear-gradient(180deg,#e8f6ee,#f6fbf8);
+      flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent);
+      font-weight:700;
+    }
+
+    /* Support / contact */
+    .support-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:20px;
+    }
+
+    footer{
+      padding:36px 0;
+      color:var(--muted);
+      font-size:0.87rem;
+      text-align:center;
+      border-top: 1px solid rgba(14,30,37,0.04);
+      margin-top:40px;
+    }
+
+    /* small screens */
+    @media (max-width:960px){
+      .hero-grid{grid-template-columns: 1fr; padding:10px;}
+      .two-col{grid-template-columns: 1fr; }
+      .support-grid{grid-template-columns:1fr;}
+      header{padding: 8px 0;}
+      .menu-toggle{display:inline-flex}
+      nav{display:none}
+      .container{width: calc(100% - 28px)}
+    }
+
+    /* subtle animations */
+    .reveal{
+      opacity:0;
+      transform: translateY(12px);
+      transition: opacity 500ms var(--easing), transform 500ms var(--easing);
+      will-change: transform, opacity;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- Inline SVG : leaf-shaped power button -->
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- outer rounded square -->
+            <rect x="0" y="0" width="48" height="48" rx="10" fill="none"/>
+            <!-- power ring -->
+            <g transform="translate(6 6)">
+              <path d="M18 1.5c-4.7 0-8.5 3.8-8.5 8.5 0 4.1 3 7.5 6.8 8.3L16 25l3.7-6.7c3.8-0.8 6.8-4.2 6.8-8.3 0-4.7-3.8-8.5-8.5-8.5z" fill="white" opacity="0.06"/>
+              <path d="M18 0c-6.6 0-12 5.4-12 12 0 5.9 4.2 10.8 9.7 11.7L18 32l2.3-8.3C25.8 22.8 30 18 30 12 30 5.4 24.6 0 18 0z" fill="white" opacity="0.06"/>
+              <!-- leaf as power symbol -->
+              <path d="M11 4c0 0 4-3 9-1s7 7 6 11-6 8-6 8-3-3-6-2c-2.6.9-4 2-6 1-2-1-3-6-1-9s5-8 4-8z" fill="white" transform="translate(0,0) scale(.9)"/>
+              <circle cx="18" cy="4" r="2.1" fill="white"/>
+            </g>
+          </svg>
+        </div>
+
+        <div>
+          <div class="site-title">Nature On</div>
+          <div class="site-sub">자연의 스위치를 켜다</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#intro" class="nav-link active">소개</a>
+        <a href="#activity" class="nav-link">핵심활동</a>
+        <a href="#campaign" class="nav-link">캠페인참여</a>
+        <a href="#news" class="nav-link">뉴스·스토리</a>
+        <a href="#support" class="nav-link">후원·문의</a>
+      </nav>
+
+      <button class="menu-toggle" aria-label="메뉴 열기" id="menuToggle">
+        ☰
+      </button>
+    </header>
+
+    <!-- HERO / full-screen -->
+    <main>
+      <section id="intro" class="hero" aria-labelledby="heroHeading">
+        <div class="hero-grid container">
+          <div class="hero-card reveal">
+            <span class="kicker">청소년 주도 · 지역 생태복원</span>
+            <h1 id="heroHeading">Nature On — 자연의 스위치를 켜다</h1>
+            <p class="lead">우리는 작은 행동으로 지역의 생태계를 다시 깨웁니다. 나무 심기, 하천 정화, 생물다양성 지도 만들기까지 — 청소년이 직접 설계하고 실행하는 환경 프로젝트입니다.</p>
+
+            <div class="cta-row">
+              <button class="btn" id="joinBtn">캠페인 참여하기</button>
+              <a href="#news" class="btn ghost">최근 스토리 보기</a>
+            </div>
+
+            <div style="margin-top:20px" class="small">
+              <strong>핵심 활동</strong> — 청소년 주도 지역 생태복원 프로젝트 (나무심기 · 하천정화 · 생태조사)
+            </div>
+          </div>
+
+          <div class="hero-preview reveal" aria-hidden="true">
+            <div class="stat card">
+              <div>
+                <div style="font-size:0.85rem;color:var(--muted)">프로젝트</div>
+                <strong>12</strong> 지역 진행 중
+              </div>
+            </div>
+
+            <div class="stat card">
+              <div>
+                <div style="font-size:0.85rem;color:var(--muted)">참여 학생</div>
+                <strong>1,240+</strong>
+              </div>
+            </div>
+
+            <div class="stat card">
+              <div>
+                <div style="font-size:0.85rem;color:var(--muted)">심은 나무</div>
+                <strong>3,520</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 핵심활동 -->
+      <section id="activity" class="reveal">
+        <div class="container">
+          <div class="section-title">
+            <h2>핵심활동</h2>
+            <div class="section-sub">청소년이 설계하고 실행하는 지역 생태복원 활동</div>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <div class="card">
+                <h3>주요 프로그램</h3>
+                <div class="activity-list">
+                  <div class="activity">
+                    <div class="dot" aria-hidden="true"></div>
+                    <div>
+                      <strong>지역 숲 복원</strong>
+                      <p class="small">지역 토종 나무 심기, 관리 워크숍, 모니터링</p>
+                    </div>
+                  </div>
+
+                  <div class="activity">
+                    <div class="dot"></div>
+                    <div>
+                      <strong>하천 정화 & 수질 모니터링</strong>
+                      <p class="small">학생 주도의 정기 정화 활동과 수질 조사</p>
+                    </div>
+                  </div>
+
+                  <div class="activity">
+                    <div class="dot"></div>
+                    <div>
+                      <strong>생태 지도 만들기</strong>
+                      <p class="small">지역 생물 관찰 기록을 모아 공용 생태지도 제작</p>
+                    </div>
+                  </div>
+
+                  <div class="activity">
+                    <div class="dot"></div>
+                    <div>
+                      <strong>생태 교육 & 캠페인</strong>
+                      <p class="small">학교·지역에서 생태교육 및 행동 촉구 캠페인 진행</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="margin-top:18px">
+                <h3>프로젝트 사례</h3>
+                <p class="small">2025년 봄, '북천 되살리기' 프로젝트 — 80명의 학생과 함께 하천 쓰레기 520kg 수거, 토종 수생식물 320주 복원.</p>
+              </div>
+            </div>
+
+            <aside>
+              <div class="card">
+                <h4>자원봉사 가이드</h4>
+                <p class="small">참여 전 준비물: 장갑, 장화(또는 물에 젖지 않는 신발), 모자, 물병. 안전 교육은 현장 도착 후 진행됩니다.</p>
+                <a class="btn" href="#campaign">지금 참여하기</a>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- 캠페인 참여 -->
+      <section id="campaign" class="reveal">
+        <div class="container">
+          <div class="section-title">
+            <h2>캠페인 참여</h2>
+            <div class="section-sub">간단한 신청으로 지역 활동에 참여할 수 있어요</div>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <div class="card">
+                <h3>빠른 참여 신청</h3>
+                <form id="joinForm" autocomplete="on" novalidate>
+                  <label for="name">이름</label>
+                  <input id="name" name="name" type="text" placeholder="홍길동" required />
+
+                  <label for="grade">학년/반</label>
+                  <input id="grade" name="grade" type="text" placeholder="예: 충렬여고 1학년 1반" />
+
+                  <label for="email">이메일</label>
+                  <input id="email" name="email" type="email" placeholder="name@example.com" required />
+
+                  <label for="activityType">참여 희망 활동</label>
+                  <select id="activityType" name="activityType">
+                    <option>나무 심기</option>
+                    <option>하천 정화</option>
+                    <option>생태 조사</option>
+                    <option>교육·캠페인 보조</option>
+                  </select>
+
+                  <label for="note">간단한 한마디 (선택)</label>
+                  <textarea id="note" name="note" rows="3" placeholder="참여 동기나 알릴 점"></textarea>
+
+                  <div style="display:flex;gap:10px;align-items:center">
+                    <button class="btn" type="submit">신청하기</button>
+                    <button class="btn ghost" type="button" id="clearBtn">초기화</button>
+                  </div>
+                  <p id="formMsg" class="small" style="margin-top:10px;color:var(--muted)"></p>
+                </form>
+              </div>
+
+              <div class="card" style="margin-top:18px">
+                <h4>캠페인 원칙</h4>
+                <ul class="small" style="padding-left:16px;margin:8px 0">
+                  <li>현장 안전 최우선</li>
+                  <li>지역 주민과 협력</li>
+                  <li>토종 식물 중심 복원</li>
+                </ul>
+              </div>
+            </div>
+
+            <aside>
+              <div class="card">
+                <h4>자주 묻는 질문</h4>
+                <p class="small"><strong>Q.</strong> 참가비가 있나요?<br><strong>A.</strong> 기본 활동은 무료입니다. 특별 도구나 교통은 개인 부담일 수 있습니다.</p>
+                <p class="small"><strong>Q.</strong> 안전 교육은 언제 하나요?<br><strong>A.</strong> 활동 시작 전 현장 안전 교육을 진행합니다.</p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- 뉴스 / 스토리 -->
+      <section id="news" class="reveal">
+        <div class="container">
+          <div class="section-title">
+            <h2>뉴스 · 스토리</h2>
+            <div class="section-sub">프로젝트 현장 스토리와 활동 보고</div>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <div class="news-list card">
+                <article class="news-item" aria-labelledby="n1">
+                  <div class="news-thumb" aria-hidden="true">숲</div>
+                  <div>
+                    <h3 id="n1" style="margin:0 0 6px">[프로젝트 리포트] 북천 되살리기 — 2025 봄</h3>
+                    <p class="small" style="margin:0">학생 80명과 함께 하천 정화 및 토종 식물 복원으로 지역 생태가 눈에 띄게 회복되었습니다.</p>
+                  </div>
+                </article>
+
+                <article class="news-item" aria-labelledby="n2">
+                  <div class="news-thumb">나무</div>
+                  <div>
+                    <h3 id="n2" style="margin:0 0 6px">학생 주도 : 마을 숲 만들기</h3>
+                    <p class="small" style="margin:0">청소년 설계팀이 직접 만든 식재 계획으로 500그루를 심었습니다.</p>
+                  </div>
+                </article>
+
+                <article class="news-item" aria-labelledby="n3">
+                  <div class="news-thumb">물</div>
+                  <div>
+                    <h3 id="n3" style="margin:0 0 6px">하천 생물다양성 관찰일지</h3>
+                    <p class="small" style="margin:0">수생곤충과 작은 어류의 복귀가 감지되었습니다 — 지속 모니터링 중.</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <aside>
+              <div class="card">
+                <h4>스토리 하이라이트</h4>
+                <p class="small">학생들이 직접 작성한 활동 일지와 사진, 인터뷰를 정기적으로 업로드합니다. 지역 주민과의 협업 이야기들도 볼 수 있어요.</p>
+              </div>
+
+              <div class="card" style="margin-top:14px">
+                <h4>구독</h4>
+                <p class="small">최신 소식 이메일 구독</p>
+                <form id="subscribeForm" novalidate>
+                  <input type="email" id="subEmail" placeholder="이메일 주소" required />
+                  <button class="btn" type="submit">구독</button>
+                </form>
+                <p id="subMsg" class="small" style="margin-top:8px;color:var(--muted)"></p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- 후원 / 문의 -->
+      <section id="support" class="reveal">
+        <div class="container">
+          <div class="section-title">
+            <h2>후원 · 문의</h2>
+            <div class="section-sub">함께 해주세요 — 후원과 문의는 아래로</div>
+          </div>
+
+          <div class="card support-grid">
+            <div>
+              <h3>후원 안내</h3>
+              <p class="small">작은 후원은 도구 구매, 묘목 구입, 현장 안전 장비 등으로 사용됩니다. 학교 단체 후원 및 지역 기업 후원도 환영합니다.</p>
+              <p class="small"><strong>계좌정보(샘플)</strong><br>국민은행 000-000000-00 예금주: Nature On</p>
+            </div>
+
+            <div>
+              <h3>문의하기</h3>
+              <form id="contactForm" novalidate>
+                <label for="cname">이름</label>
+                <input id="cname" type="text" placeholder="이름" required />
+
+                <label for="cemail">이메일</label>
+                <input id="cemail" type="email" placeholder="name@example.com" required />
+
+                <label for="cmessage">문의 내용</label>
+                <textarea id="cmessage" rows="4" placeholder="문의 내용을 입력해 주세요" required></textarea>
+
+                <button class="btn" type="submit">전송</button>
+                <p id="contactMsg" class="small" style="margin-top:8px;color:var(--muted)"></p>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="container">
+      <div style="max-width:var(--max-width);margin:0 auto">
+        <p>© <strong>Nature On</strong> — 모든 권리는 보호됩니다.</p>
+        <p style="margin-top:6px;color:#475259">이 홈페이지의 지적 소유권은 <strong>충렬여고 1학년 1반</strong>에게 있다.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Minimal JS: smooth scroll, mobile nav, form handling, reveal on scroll -->
+  <script>
+    (function(){
+      // Helpers
+      const qs = s => document.querySelector(s);
+      const qsa = s => Array.from(document.querySelectorAll(s));
+
+      // Smooth scroll for nav links
+      qsa('.nav-link').forEach(a=>{
+        a.addEventListener('click', function(e){
+          e.preventDefault();
+          const id = this.getAttribute('href');
+          document.querySelector(id).scrollIntoView({behavior:'smooth', block:'start'});
+          // update active
+          qsa('.nav-link').forEach(x => x.classList.remove('active'));
+          this.classList.add('active');
+          // close mobile nav if open
+          if(window.innerWidth <= 960){
+            hideNav();
+          }
+        });
+      });
+
+      // mobile nav toggle (simple)
+      const menuToggle = document.getElementById('menuToggle');
+      menuToggle.addEventListener('click', function(){
+        const nav = document.querySelector('nav');
+        if(nav.style.display === 'flex') hideNav();
+        else showNav();
+      });
+      function showNav(){ const nav = document.querySelector('nav'); nav.style.display='flex'; nav.style.flexDirection='column'; nav.style.position='absolute'; nav.style.right='16px'; nav.style.top='64px'; nav.style.background='rgba(255,255,255,0.95)'; nav.style.padding='12px'; nav.style.borderRadius='12px'; nav.style.boxShadow='0 12px 36px rgba(14,30,37,0.08)'; }
+      function hideNav(){ const nav = document.querySelector('nav'); nav.style.display='none'; nav.style.position='static'; nav.style.boxShadow='none'; }
+
+      // join button scroll to campaign
+      document.getElementById('joinBtn').addEventListener('click', function(){
+        document.getElementById('campaign').scrollIntoView({behavior:'smooth'});
+      });
+
+      // Simple form handling (no backend) - show confirmation message
+      const joinForm = document.getElementById('joinForm');
+      joinForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = this.name.value.trim();
+        const email = this.email.value.trim();
+        if(!name || !email){
+          showFormMsg('formMsg','이름과 이메일을 입력해 주세요.', true);
+          return;
+        }
+        showFormMsg('formMsg', `${name}님, 캠페인 신청이 접수되었습니다. (샘플)`, false);
+        this.reset();
+      });
+      document.getElementById('clearBtn').addEventListener('click', function(){
+        joinForm.reset();
+        showFormMsg('formMsg','', false);
+      });
+      function showFormMsg(id,msg,isError){
+        const el = document.getElementById(id);
+        el.textContent = msg;
+        el.style.color = isError ? '#b33' : 'var(--muted)';
+      }
+
+      // subscribe form
+      const subscribeForm = document.getElementById('subscribeForm');
+      subscribeForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        const email = document.getElementById('subEmail').value.trim();
+        if(!email || !email.includes('@')){
+          document.getElementById('subMsg').textContent = '유효한 이메일을 입력해 주세요.';
+          return;
+        }
+        document.getElementById('subMsg').textContent = '구독이 완료되었습니다. 감사합니다!';
+        this.reset();
+      });
+
+      // contact form
+      const contactForm = document.getElementById('contactForm');
+      contactForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = document.getElementById('cname').value.trim();
+        const email = document.getElementById('cemail').value.trim();
+        const message = document.getElementById('cmessage').value.trim();
+        if(!name || !email || !message){
+          document.getElementById('contactMsg').textContent = '모든 항목을 채워주세요.';
+          return;
+        }
+        document.getElementById('contactMsg').textContent = '문의가 접수되었습니다. 확인 후 연락드리겠습니다.';
+        this.reset();
+      });
+
+      // Reveal on scroll
+      const reveals = qsa('.reveal');
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+            // optionally unobserve to avoid toggling
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.12});
+      reveals.forEach(r => observer.observe(r));
+
+      // Update nav active on scroll (section in view)
+      const sections = qsa('main > section');
+      const navLinks = qsa('.nav-link');
+      const navObserver = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const id = entry.target.id;
+            navLinks.forEach(l => {
+              l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+            });
+          }
+        });
+      }, {threshold: 0.45});
+      sections.forEach(s => navObserver.observe(s));
+
+      // initial reveal for header
+      setTimeout(()=>{ qsa('.reveal').forEach((el,i)=>{ setTimeout(()=> el.classList.add('visible'), i*80) }) }, 120);
+
+      // Accessibility: close mobile nav on resize up
+      window.addEventListener('resize', function(){ if(window.innerWidth > 960){ const nav = document.querySelector('nav'); nav.style.display='flex'; nav.style.position='static'; nav.style.boxShadow='none'; } else { nav.style.display='none'; } });
+
+      // Ensure nav initial state for small screens
+      if(window.innerWidth <= 960){
+        document.querySelector('nav').style.display='none';
+      }
+
+      // Basic input validation prevention for older browsers
+      // (already handled by JS above)
+    })();
+  </script>
+</body>
+</html>
